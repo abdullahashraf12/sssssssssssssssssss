@@ -1,0 +1,65 @@
+Zoho Creator Integration with Oracle Database via Web Service
+
+Request Objective:
+Create a Web Service that integrates an Oracle database with Zoho Creator to read item data from Oracle and automatically and periodically insert or update it within a Zoho Creator application.
+The integration will be implemented with Oracle Database as the Source and Zoho as the Destination.
+
+Technical Requirements:
+
+Oracle:
+Schema: TC2025/TC
+Connect String / TNS: dreamer-laptop:1521/orcl
+
+Zoho Creator:
+Application Name: carton
+Form: Items_Data
+
+Data Mapping:
+
+SK1MF Table in Oracle ↔ Items_Data in Zoho:
+The following table shows the mapping between fields in the Oracle database and the fields to be created in Zoho Creator, taking into account the following:
+
+Decision Box fields of type VARCHAR2(1) in Oracle containing values (Y/N) should be converted to values (true/false) in Zoho.
+
+Filter fields are read based on PS33M1, which is the item code.
+
+Oracle Field Name	Field Type	Zoho Field Name	Data Format	Explanation
+SK1MCP	NUMBER(3)	Company	NUMBER(3)	Company Code
+SK1MYR	NUMBER(4)	Year	NUMBER(4)	Year
+SK1M1	VARCHAR2(20)	Item_Code	Single-Line (20)	Item Code
+SK1M2	VARCHAR2(40)	Item_Arabic_Name	Single-Line (40)	Arabic Item Name
+SK1M3	VARCHAR2(40)	Item_English_Name	Single-Line (40)	English Item Name
+SK1M9	NUMBER(1)	SK1M9	NUMBER(1)	Item Type Code
+SK1M11	VARCHAR2(1)	Posted_N_Year	Decision Box	Flag: Carried Forward to Next Year
+SK1M12	VARCHAR2(1)	Imported_Item	Decision Box	Flag: Imported Item
+SK1M13	VARCHAR2(1)	Expiry_Date	Decision Box	Flag: Expiry Date
+SK1M14	NUMBER(2)	Item_Tax	NUMBER(2)	Tax Percentage Code
+SK1M16	NUMBER(3)	Unit_1_Code	NUMBER(3)	First Unit Code
+SK1M17	NUMBER(3)	Unit_2_Code	NUMBER(3)	Second Unit Code
+SK1M18	NUMBER(3)	Unit_3_Code	NUMBER(3)	Third Unit Code
+SK1M19	NUMBER(3)	Unit_4_Code	NUMBER(3)	Fourth Unit Code
+SK1M20	NUMBER(8)	Unit_1_Content	NUMBER(8)	Content of First Unit
+SK1M21	NUMBER(8)	Unit_2_Content	NUMBER(8)	Content of Second Unit
+SK1M22	NUMBER(8)	Unit_3_Content	NUMBER(8)	Content of Third Unit
+SK1M24	VARCHAR2(20)	Add_Code	Single-Line (20)	Additional Item Code
+SK1M29	VARCHAR2(20)	Parent_Item	Single-Line (20)	Parent Item Code
+SK1M31	VARCHAR2(1)	Salable_Item	Decision Box	Flag: Salable
+SK1M32	VARCHAR2(1)	Purchasable_Item	Decision Box	Flag: Purchasable
+SK1M33	VARCHAR2(1)	Productionable_Item	Decision Box	Flag: Producible
+SK1M34	NUMBER(3)	Report_Unit_Code	NUMBER(3)	Reporting Unit Code
+SK1M36	VARCHAR2(3)	Weight_Unit_Code	Single-Line (3)	Weight Unit Code
+SK1M37	NUMBER(3)	Weight_of_Unit	NUMBER(3)	Unit Weight
+SK1M39	NUMBER(3)	Sales_Unit_Code	NUMBER(3)	Sales Unit Code
+SK1M40	VARCHAR2(1)	Batch_No	Decision Box	Flag: Batch Number
+SK1M41	VARCHAR2(1)	Lot_No	Decision Box	Flag: Lot Number
+SK1M261	NUMBER(5)	Eq_Code	NUMBER(5)	Equation Code
+PS33M2	NUMBER(4)	It_Filter_Type_Code	NUMBER(4)	Filter Method Code
+PS33M4	NUMBER(4)	It_Filter_Code	NUMBER(4)	Filter Code
+GRBRF Table in Oracle ↔ Branches_Codes in Zoho:
+
+Oracle Field Name	Field Type	Zoho Field Name	Data Format	Explanation
+GRBRCP	NUMBER(3)	GRBRCP	NUMBER(3)	Company Code
+GRBRYR	NUMBER(4)	GRBRYR	NUMBER(4)	Year
+BN	NUMBER(3)	Branch_Code	NUMBER(3)	Branch Code
+GRBR2	NUMBER(4)	Branch_Arabic_Name	Single-Line (20)	Arabic Name
+GRBR3	NUMBER(3)	Branch_English_Name	Single-Line (20)	English Name
