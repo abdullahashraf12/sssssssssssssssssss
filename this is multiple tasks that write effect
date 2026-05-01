@@ -1,0 +1,252 @@
+this is multiple tasks that write effective plan for all of them as 1 read official ull docs + read and parse and trigger all urls request and modify the code for the most effectve production ready on each of every smallest child pf parent of each pf the html as the html contains a tree of zoho urls creator child platform as also fix the issues "pc@pc:~/fgggggggggggggggggggg/SimplestNeatExample$ python3.10 -m sync.main --mode realtime --realtime-workers 1 --zoho-max-concurrency 1 --zoho-rate-per-minute 50
+2026-05-01 20:43:45,230 INFO sync.token_manager: loaded saved access token from .env
+2026-05-01 20:43:45,231 INFO sync.realtime_worker: realtime worker started
+2026-05-01 20:43:45,231 INFO sync.dead_worker: dead-retry worker started (poll every 30 s)
+2026-05-01 20:43:45,244 INFO sync.dead_worker: dead-retry: reset 1 DEAD event(s) → NEW
+2026-05-01 20:43:46,062 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:43:46,062 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:43:46,724 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:43:46,964 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:43:46,964 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:43:47,156 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:43:47,406 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:43:47,406 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:43:47,597 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:43:47,851 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:43:47,851 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:43:48,044 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:43:48,298 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:43:48,298 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:43:48,489 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:44:15,259 INFO sync.dead_worker: dead-retry: reset 1 DEAD event(s) → NEW
+2026-05-01 20:44:15,503 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:44:15,503 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:44:15,698 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:44:15,949 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:44:15,949 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:44:16,142 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:44:16,382 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:44:16,382 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:44:16,577 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:44:16,844 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:44:16,844 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:44:17,037 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+2026-05-01 20:44:17,288 WARNING sync.zoho_client: 401 Unauthorized → refreshing token and retrying
+2026-05-01 20:44:17,288 INFO sync.token_manager: refreshing Zoho access token...
+2026-05-01 20:44:17,486 ERROR sync.realtime_worker: event 4 failed
+Traceback (most recent call last):
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 156, in _handle_event
+    self._sync_items(cursor, ev)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/realtime_worker.py", line 231, in _sync_items
+    new_id = self._zoho.add_record(self._form_items, payload,
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 73, in add_record
+    resp = self._call("POST", self._form_url(form), body, priority=priority)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/zoho_client.py", line 163, in _call
+    self._tokens.get(force_refresh=True)
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 53, in get
+    return self._refresh()
+  File "/home/pc/fgggggggggggggggggggg/SimplestNeatExample/sync/token_manager.py", line 73, in _refresh
+    raise TokenError(f"Token refresh failed: {data}")
+sync.token_manager.TokenError: Token refresh failed: {'error': 'invalid_client'}
+^C2026-05-01 20:44:29,170 INFO sync.main: shutdown requested
+2026-05-01 20:44:29,171 INFO sync.dead_worker: dead-retry worker stopped
+2026-05-01 20:44:29,171 INFO sync.realtime_worker: realtime worker stopped
+pc@pc:~/fgggggggggggggggggggg/SimplestNeatExample$  as i will giver you all code needed as i want you always to follow this exact rule ehich is i want you to rely only on docs of of zoho which is "https://www.zoho.com/creator/help/api/v2/oauth-overview.html ,https://www.zoho.com/creator/help/api/v2/openapi-specification.html 
+https://www.zoho.com/creator/help/api/v2/status-codes.html 
+https://www.zoho.com/creator/help/api/v2/add-records.html 
+https://www.zoho.com/creator/help/api/v2/publish-api/add-records.html 
+https://www.zoho.com/creator/help/api/v2/get-fields.html 
+https://www.zoho.com/creator/help/api/v2/bulk-api/overview.html " as keep in mind these urls is not the only you can do parse each url as to know all of urls "<div class="api-menu-panel" id="21405" style="top: 143px;"><div class="api-menu-search"><div class="select-wrap"><select class="filter" tabindex="0" aria-label="Select versions"><option value="/creator/help/api/v2/index.html">Version 2</option><option selected="selected" value="/creator/help/api/v2.1/index.html">Version 2.1</option></select><span class="select-dropdown"></span></div><span class="zgh-search-iconn" tabindex="0" aria-label="Click to open search box" role="button"></span></div><div class="api-menu-lists" style="height: 687px;"><div><ul class="zoho-parent-wrapper" role="menubar" style="display: block;"><li class="noChild open" role="none"><a href="/creator/help/api/v2.1/index.html" class="pro-active active" tabindex="0" aria-expanded="true">Overview</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/what-is-new-in-v2.1.html" class="" tabindex="-1" aria-expanded="false">What's New in v2.1?</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/openapi-specification.html" class="" tabindex="-1" aria-expanded="false">OpenAPI Specification</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/oauth-overview.html" class="" tabindex="-1" aria-expanded="false">API Authentication</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/status-codes.html" class="" tabindex="-1" aria-expanded="false">API v2.1 Status Codes</a></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem" aria-expanded="false">Data APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/add-records.html" class="" tabindex="-1"><span class="api-type post">POST</span>Add Records</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-records-by-ID.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Record by ID</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-records.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Records</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/update-records.html" class="" tabindex="-1"><span class="api-type patch">PATCH</span>Update Records</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/update-specific-record.html" class="" tabindex="-1"><span class="api-type patch">PATCH</span>Update Record by ID</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/delete-specific-record.html" class="" tabindex="-1"><span class="api-type delete">DELETE</span>Delete Record by ID</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/delete-records.html" class="" tabindex="-1"><span class="api-type delete">DELETE</span>Delete Records</a></li></ul></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem" aria-expanded="false">Publish APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/publish-api/add-records.html" class="" tabindex="-1"><span class="api-type post">POST</span>Add Records</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/publish-api/get-record-by-id.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Record by ID</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/publish-api/get-records.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Records</a></li></ul></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem" aria-expanded="false">File APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/upload-file.html" class="" tabindex="-1"><span class="api-type post">POST</span>Upload File</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/download-file.html" class="" tabindex="-1"><span class="api-type get">GET</span>Download File</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/download-file-from-subform.html" class="" tabindex="-1"><span class="api-type get">GET</span>Download File from Subform</a></li></ul></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem" aria-expanded="false">Meta APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-fields.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Fields</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-forms.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Forms</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-reports.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Reports</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-pages.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Pages</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-sections.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Sections</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-applications.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Applications</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/get-workspace-applications.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get Applications by Workspace</a></li></ul></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem" aria-expanded="false">Bulk APIs</a><span class="zoho-api-toggle"></span><ul><li class="hasChild" role="none"><a tabindex="-1" role="menuitem">Bulk Read APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild " role="none"><a href="/creator/help/api/v2.1/bulk-api/overview.html" class="" tabindex="-1">Overview</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-api/create-bulk-read-job.html" class="" tabindex="-1"><span class="api-type get">GET</span>Create Bulk Read job (Bulk Export)</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-api/get-the-status-of-the-bulk-read-job.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get the Status of the Bulk Read Job</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-api/download-bulk-read-result.html" class="" tabindex="-1"><span class="api-type get">GET</span>Download Bulk Read Result</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/bulk-api/limitations.html" class="" tabindex="-1">Limitations</a></li></ul></li><li class="hasChild" role="none"><a tabindex="-1" role="menuitem">Bulk Insert APIs</a><span class="zoho-api-toggle"></span><ul><li class="noChild " role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/overview.html" class="" tabindex="-1">Overview</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/create-bulk-insert-job.html" class="" tabindex="-1"><span class="api-type post">POST</span>Create Bulk Insert job</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/upload-bulk-insert-job.html" class="" tabindex="-1"><span class="api-type post">POST</span>Upload file to Bulk Insert job</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/start-abort-job-status.html" class="" tabindex="-1"><span class="api-type patch">PATCH</span>Start/Abort Bulk Insert job</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/get-job-status.html" class="" tabindex="-1"><span class="api-type get">GET</span>Get the Status of the Bulk Insert job</a></li><li class="noChild api-type-menu" role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/download-bulk-insert-result.html" class="" tabindex="-1"><span class="api-type get">GET</span>Download Bulk Insert Result</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/bulk-insert-api/limitations.html" class="" tabindex="-1">Limitations</a></li></ul></li></ul></li><li class="noChild " role="none"><a href="https://help.zoho.com/portal/en/kb/creator/developer-guide/microservices/custom-api" class="" tabindex="-1" aria-expanded="false">Custom API</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/things-to-know.html" class="" tabindex="-1" aria-expanded="false">Things to know</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/api-limits.html" class="" tabindex="-1" aria-expanded="false">API limits</a></li><li class="noChild " role="none"><a href="/creator/help/api/v2.1/run-creator-api-in-postman.html" class="" tabindex="-1" aria-expanded="false">Run Creator APIs in Postman</a></li></ul></div></div><span class="mob-menu-click"></span></div>
+"" as the code you will see i don't use the most effectve production ready as i want to make all of official supports , but first analyze as each i have solid crititical points i want you also to focus on them
+1- thread of realtime mode is not effecting on backfill mode as "both mode" as it runs them as are parallel as they are not depend on each other as they are parallel  on entire of both pipeline cycle flow as each flow are independent but to keep in mind also if create as insert command operation or  update command operation or delete
+as each of these when i run mode (both)  i got duplicates at zoho 
+on create operation and on update operation 
+even on delete it's not delete on zoho as when i do 
+insert then do delete the zoho at insert 
+1 row is added as i see only 1 row at zoho is added
+ but then if i did delete this same record i see zoho has 2 records of this (despite or as i must see this same record with no duplicated i should not see it as it's removed in backend as if i did search it in zoho data reports at zoho i should get 
+"empty rows" as this is the most default normal behaviour as on delete 
+) 
+as if now i start clean and i did drop all triggers and tables and start from beginning of a new test use case as on 
+create insert i see in zoho 1 row is being added but if i did update
+ i see i got duplicates at zoho
+as 
+
+as analyze well this issue
+as to keep in mind i want this project is to be reliable by means 
+if internet goes down no max retry as by means always retry as also to consider always retry meanning always ping google.com as if scueess then try to get acccess token from .en if it's not exist then trigger refresh token as refresh token among other config will be always exist in .env but only the access token may or may not be exist as if not exist trigger refresh token as if exist but you got 401 or invalid_code then retry first 3 time as between each 3 time is 10 second as if all 3 times failed then retry on each 1 hour with no max retry times mechanism on period of each 1 hour times
+as keep in ind also there is a different third thread i forgot to tell you about which is when "DEAD" STATE OR STATUS IT SHOULD BE ON ALL DEAD RECORD AS ON ALL MODES IF THE STATE OF THIS EVENT TRIGGERED ENS UP THE RECORD ARE BEING DEAD THIS THIRD THREAD IS ALWAYS RETRY TO SUBMIT TO ZOHO AS TO CONSIDER THIS EVENT WHEN IT'S BECOME DELETE LATER IN FUTURE BUT WHEN THE THREAD BEFORE SENDING SEES THAT OR CHECKS THAT IF THIS DEAD IF IS DELETED FROM DATABASE THEN IT SHOULD NOT BE SAID AS IT'S ALREADY DELETED  AS ON ALL NOT DEAD AT SAME TIME BUT EXIST AT DATABASE RECORDS RECHECK IT'S HASH AS IF THE DEAD HAS DIFFERENT HASH REINTIALIZE IT AS A "NEW" AS THIS MEANS THAT WHEN IT WAS EXIST THERE IS SOMEONE DID UPDATE ON DATABASE AT SAME TIME
+ THEN TRY TO SUBMIT TO ZOHO AS THERE IS NO MAX OF RETRYING MECHANISM 
+ AS ON ALL POINTS I WANT YOU TO CONSIDER ALL OF THEM AT FIRST AS TO ADD A NEW REFERANCE PLAN .MD THAT CONTAINS AS CONSIDERING ALL I SAID TO SEARCH ALL ZOHO API DOCS  AS TO SET IN THID MD FILE HOW TO YOU USE THE RECOMMENDED BEST PRACTICE FOR EACH AS THIS AS THEN ANALYZE THE CODE FILES  THEN WRITE ANOTHER MD FILE IN CURRENT REPO ALSO AS WELL TO TELL ME HOW WOULD YOU MODIFY EACH PART OF EXISTING CODE THAT TO APPLY ALL OF I DID AND ALL OF I WANT , NOW DO YOU HAVE ANY QUESTIONS BEFORE YOU DO THESE ?
+
+
+
+
+
+
+
+
+
+i added to you all the project files read them again and ask me is there still any questions ?
+and as for "Should we standardize on v2.1 everywhere (recommended), or keep mixed support for v2 and v2.1?
+
+"
+ i want the most stable and most supported according to latest release so search web to know about it 
+and as for 
+"When a record is deleted in source DB, should Zoho side do:
+
+hard delete immediately"
+ 
+and as for 
+
+Retry policy confirmation
+
+you may need a plus number of a book of on all times of both times to be exact 10s and 1 hour forever 
+
+and as for 
+Token error handling scope
+ if 3 retry on next  beginning of each of hour check if this auth failed again and previous access token or refresh token by using hashing of it's previous and the next if modified by hashing is different then this means the client did add the correct configuration as if this happens infinite time then do "still retry forever automatically" but if same hasing then do "misconfiguration requiring operator alert " by playing system mp3 file as to alert the user from his pc speaker
+and as for 
+
+Google ping dependency
+
+yes please do "a fallback health-check endpoint (e.g., Zoho auth domain) in case Google is blocked by firewall?"
+ and as for 
+
+"Threading model" keep the same as "Keep current multi-thread architecture"
+
+and for "DEAD event reactivation rule"   then do "If the record exists in DB and its hash changed → update Zoho.
+If the record no longer exists in DB but exists in Zoho → delete it from Zoho."
+  and as for 
+Deliverables format
+i want "Zoho docs best-practice reference plan
+
+"
+and for "Any required filenames ?" i will the naming files up to you as to rename them correctely 
+now is there is anything you didn't understand or did i left anything you still want to ask ?
