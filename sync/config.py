@@ -29,18 +29,6 @@ def _require(name: str) -> str:
     return val
 
 
-def _read_refresh_token() -> str:
-    explicit = os.environ.get("ZOHO_REFRESH_TOKEN")
-    if explicit:
-        return explicit.strip()
-    path = os.environ.get(
-        "ZOHO_REFRESH_TOKEN_FILE",
-        str(Path(__file__).resolve().parent.parent / "zoho_refresh_token.txt"),
-    )
-    with open(path, "r", encoding="utf-8") as fh:
-        return fh.read().strip()
-
-
 @dataclass(frozen=True)
 class Config:
     oracle_user: str
@@ -50,30 +38,23 @@ class Config:
     zoho_app: str
     zoho_form_items: str
     zoho_form_branches: str
-    zoho_client_id: str
-    zoho_client_secret: str
-    zoho_refresh_token: str
-    zoho_token_url: str
     zoho_api_base: str
     max_attempts: int
     realtime_batch: int
+    env_path: str
 
 
 def load() -> Config:
+    env_path = str(Path(__file__).resolve().parent.parent / ".env")
     return Config(
+        env_path=env_path,
         oracle_user=os.environ.get("ORACLE_USER", "test"),
         oracle_pass=os.environ.get("ORACLE_PASS", "test"),
-        oracle_dsn=os.environ.get("ORACLE_DSN", "localhost:1521/orcl"),
+        oracle_dsn=os.environ.get("ORACLE_DSN", "192.168.100.15:1521/orcl"),
         zoho_account_owner=os.environ.get("ZOHO_ACCOUNT_OWNER", "alpha1.abdullah771"),
         zoho_app=os.environ.get("ZOHO_APP", "carton"),
         zoho_form_items=os.environ.get("ZOHO_FORM_ITEMS", "Items_Data"),
         zoho_form_branches=os.environ.get("ZOHO_FORM_BRANCHES", "Branches_Codes"),
-        zoho_client_id=_require("ZOHO_CLIENT_ID"),
-        zoho_client_secret=_require("ZOHO_CLIENT_SECRET"),
-        zoho_refresh_token=_read_refresh_token(),
-        zoho_token_url=os.environ.get(
-            "ZOHO_TOKEN_URL", "https://accounts.zoho.com/oauth/v2/token"
-        ),
         zoho_api_base=os.environ.get(
             "ZOHO_API_BASE", "https://creatorapp.zoho.com/api/v2"
         ),

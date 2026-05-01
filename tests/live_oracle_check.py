@@ -28,7 +28,7 @@ sys.path.insert(0, str(ROOT))
 import cx_Oracle  # noqa: E402
 
 from sync.oracle_pool import OraclePool
-from sync.rate_limiter import IntervalLimiter
+from sync.rate_limiter import ZohoTrafficGate
 from sync.realtime_worker import RealtimeWorker
 from sync.token_manager import TokenManager
 from sync.zoho_client import ZohoClient
@@ -54,7 +54,7 @@ LEGACY_INVALID_TRIGGERS = (
 
 ORACLE_USER = os.environ.get("ORACLE_USER", "test")
 ORACLE_PASS = os.environ.get("ORACLE_PASS", "test")
-ORACLE_DSN  = os.environ.get("ORACLE_DSN",  "localhost:1521/orcl")
+ORACLE_DSN  = os.environ.get("ORACLE_DSN",  "192.168.100.15:1521/orcl")
 
 # ---------------------------------------------------------------------------
 # Mock Zoho HTTP server
@@ -80,7 +80,8 @@ class MockZoho(http.server.BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_POST(self):
-        if self.path.endswith("/oauth/v2/token"):
+        path_no_qs = self.path.split("?")[0]
+        if path_no_qs.endswith("/oauth/v2/token"):
             self._read_body()
             return self._ok({"access_token": "TEST-TOKEN", "expires_in": 3600})
         self._record("POST")
@@ -129,6 +130,14 @@ def run_sql_file(conn, path: Path) -> None:
             chunks.append(raw)
     tail = "\n".join(chunks).strip()
     if tail:
+        # Strip inline -- comments BEFORE splitting by ; (comments may contain ;)
+        cleaned_lines = []
+        for line in tail.splitlines():
+            idx = line.find("--")
+            if idx >= 0:
+                line = line[:idx]
+            cleaned_lines.append(line)
+        tail = "\n".join(cleaned_lines)
         for stmt in tail.split(";"):
             s = stmt.strip()
             if s:
@@ -265,7 +274,7 @@ def run() -> int:
         try:
             tokens = TokenManager("test", "test", "test-refresh",
                                   os.environ["ZOHO_TOKEN_URL"])
-            limiter = IntervalLimiter(0.0)  # fast for the test
+            limiter = ZohoTrafficGate(0.0, 0.0, max_concurrency=0, rate_per_minute=0)  # fast for the test
             zoho = ZohoClient("alpha1.abdullah771", "carton",
                               os.environ["ZOHO_API_BASE"],
                               tokens, limiter, max_attempts=2)

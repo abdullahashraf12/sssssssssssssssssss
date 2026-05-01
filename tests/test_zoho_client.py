@@ -1,10 +1,10 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
 
-from sync.rate_limiter import IntervalLimiter
-from sync.zoho_client import ZohoClient, ZohoError
+from sync.rate_limiter import ZohoTrafficGate
+from sync.zoho_client import ZohoClient, ZohoError, ZohoRetryableError
 
 
 class FakeTokens:
@@ -12,9 +12,14 @@ class FakeTokens:
         self.value = "TOKEN-1"
         self.invalidate_count = 0
         self.force_count = 0
+        self.stale_count = 0
 
-    def get(self, force_refresh: bool = False):
-        if force_refresh:
+    def get(self, *, stale_token=None, force_refresh=False):
+        if stale_token is not None:
+            self.stale_count += 1
+            if self.value == stale_token:
+                self.value = "TOKEN-2"
+        elif force_refresh:
             self.force_count += 1
             self.value = "TOKEN-2"
         return self.value
@@ -35,7 +40,7 @@ def _resp(sc, body=None, headers=None):
 
 def _client(session, max_attempts=3):
     tokens = FakeTokens()
-    limiter = IntervalLimiter(0.0)
+    limiter = ZohoTrafficGate(0.0, 0.0, max_concurrency=0, rate_per_minute=0)
     sleeps: list[float] = []
     c = ZohoClient(
         "owner", "carton", "https://api.example.com/api/v2",
@@ -50,7 +55,7 @@ def test_add_record_success_201_returns_id():
     session.request.return_value = _resp(201, {"data": {"ID": "999"}})
     c, _, _ = _client(session)
     assert c.add_record("Items_Data", {"Item_Code": "X"},
-                        priority=IntervalLimiter.REALTIME) == "999"
+                        priority=ZohoTrafficGate.REALTIME) == "999"
 
 
 def test_add_record_success_200_also_accepted():
@@ -69,7 +74,7 @@ def test_validation_400_raises_zoho_error():
     assert exc.value.status_code == 400
 
 
-def test_401_triggers_token_refresh_and_retries():
+def test_401_triggers_stale_token_refresh_and_retries():
     session = MagicMock()
     session.request.side_effect = [
         _resp(401, {"error": "auth"}),
@@ -77,22 +82,38 @@ def test_401_triggers_token_refresh_and_retries():
     ]
     c, tokens, _ = _client(session)
     assert c.add_record("Items_Data", {}, priority=0) == "ok"
-    assert tokens.invalidate_count == 1
-    assert tokens.force_count == 1
+    assert tokens.stale_count == 1
 
 
-def test_429_respects_retry_after_and_slows_limiter():
+def test_429_raises_retryable_with_retry_after():
     session = MagicMock()
-    session.request.side_effect = [
-        _resp(429, {}, headers={"Retry-After": "0"}),
-        _resp(201, {"data": {"ID": "1"}}),
-    ]
+    session.request.return_value = _resp(429, {}, headers={"Retry-After": "7"})
     c, _, sleeps = _client(session)
-    assert c.add_record("Items_Data", {}, priority=0) == "1"
-    assert sleeps and sleeps[0] == 0.0  # honored Retry-After
+    with pytest.raises(ZohoRetryableError) as exc:
+        c.add_record("Items_Data", {}, priority=0)
+    assert exc.value.retry_after == 7.0
+    assert sleeps == []
 
 
-def test_5xx_retries_then_succeeds():
+def test_creator_2955_code_raises_retryable():
+    session = MagicMock()
+    session.request.return_value = _resp(200, {"code": 2955, "message": "throttle"})
+    c, _, _ = _client(session)
+    with pytest.raises(ZohoRetryableError):
+        c.add_record("Items_Data", {}, priority=0)
+
+
+def test_creator_4000_code_is_daily_quota_retryable():
+    session = MagicMock()
+    session.request.return_value = _resp(200, {"code": 4000, "message": "quota"})
+    c, _, _ = _client(session)
+    with pytest.raises(ZohoRetryableError) as exc:
+        c.add_record("Items_Data", {}, priority=0)
+    assert exc.value.retry_after == 3600.0
+
+
+@patch("sync.connectivity.ping_internet", return_value=True)
+def test_5xx_retries_then_succeeds(_mock_ping):
     session = MagicMock()
     session.request.side_effect = [
         _resp(503),
@@ -103,20 +124,17 @@ def test_5xx_retries_then_succeeds():
     assert c.add_record("Items_Data", {}, priority=0) == "1"
 
 
-def test_5xx_exhausts_attempts_and_raises():
+@patch("sync.connectivity.ping_internet", return_value=True)
+def test_network_error_retries_then_succeeds(_mock_ping):
+    """Network errors now retry infinitely; here we simulate recovery."""
     session = MagicMock()
-    session.request.return_value = _resp(503)
-    c, _, _ = _client(session, max_attempts=2)
-    with pytest.raises(ZohoError):
-        c.add_record("Items_Data", {}, priority=0)
-
-
-def test_network_error_retries_then_raises():
-    session = MagicMock()
-    session.request.side_effect = requests.ConnectionError("nope")
-    c, _, _ = _client(session, max_attempts=2)
-    with pytest.raises(ZohoError):
-        c.add_record("Items_Data", {}, priority=0)
+    session.request.side_effect = [
+        requests.ConnectionError("nope"),
+        requests.ConnectionError("nope"),
+        _resp(201, {"data": {"ID": "recovered"}}),
+    ]
+    c, _, _ = _client(session)
+    assert c.add_record("Items_Data", {}, priority=0) == "recovered"
 
 
 def test_update_record_uses_patch_to_report_url():

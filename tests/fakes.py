@@ -51,6 +51,13 @@ class FakeCursor:
         self._fetched = len(self._rows)
         return rest
 
+    def fetchmany(self, size=None):
+        size = len(self._rows) if size is None else size
+        end = min(len(self._rows), self._fetched + size)
+        rows = self._rows[self._fetched:end]
+        self._fetched = end
+        return rows
+
     def close(self):
         pass
 

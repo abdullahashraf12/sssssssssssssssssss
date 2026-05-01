@@ -1,8 +1,7 @@
 """Worker B: walks existing SK1MF / GRBRF rows and pushes them to Zoho.
 
 Resumable via BACKFILL_CHECKPOINT + dedup via ZOHO_MAP.
-Runs at backfill priority on the global IntervalLimiter, so realtime
-events always go ahead of backfill traffic.
+Runs through the shared ZohoTrafficGate as the backfill lane.
 """
 from __future__ import annotations
 
@@ -11,9 +10,9 @@ import threading
 from typing import Any
 
 from . import zoho_map
-from .rate_limiter import IntervalLimiter
+from .rate_limiter import ZohoTrafficGate
 from .transform import branches_payload, items_payload
-from .zoho_client import ZohoClient
+from .zoho_client import ZohoClient, ZohoError, ZohoRetryableError
 
 log = logging.getLogger(__name__)
 
@@ -68,12 +67,26 @@ class BackfillWorker:
         self._stop.set()
 
     def run(self) -> None:
+        from .connectivity import escalating_backoff
         log.info("backfill worker started")
-        try:
-            self._run_items()
-            self._run_branches()
-        finally:
-            log.info("backfill worker stopped")
+        oracle_fail_count = 0
+        while not self._stop.is_set():
+            try:
+                self._run_items()
+                self._run_branches()
+                break  # finished successfully
+            except ZohoRetryableError:
+                raise
+            except Exception as e:
+                oracle_fail_count += 1
+                delay = escalating_backoff(oracle_fail_count)
+                log.warning(
+                    "backfill worker oracle/unexpected error (attempt %d), "
+                    "retrying in %.0f s: %s", oracle_fail_count, delay, e,
+                )
+                if self._stop.wait(delay):
+                    break
+        log.info("backfill worker stopped")
 
     # ----- items
     def _run_items(self) -> None:
@@ -147,8 +160,14 @@ class BackfillWorker:
         cur = conn.cursor()
         if zoho_map.lookup(cur, source_key, **keys) is not None:
             return  # already synced (resume / retry)
-        zoho_id = self._zoho.add_record(form, payload,
-                                        priority=IntervalLimiter.BACKFILL)
+        try:
+            zoho_id = self._zoho.add_record(form, payload,
+                                            priority=ZohoTrafficGate.BACKFILL)
+        except ZohoRetryableError:
+            raise
+        except ZohoError as exc:
+            log.warning("backfill skip %s %s: %s", source_key, keys, exc)
+            return
         zoho_map.upsert(cur, source_key, zoho_id, **keys)
 
     def _read_checkpoint(self, table: str, fields: tuple[str, ...]) -> tuple:

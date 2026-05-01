@@ -34,15 +34,34 @@ def _strip(val: Any) -> Any:
     return val.strip() if isinstance(val, str) else val
 
 
+def _trunc(val: Any, maxlen: int) -> Any:
+    """Truncate string values to fit Zoho's max field length (byte-based).
+
+    Zoho Creator counts bytes, not characters, for Single-Line fields.
+    Arabic/multibyte text needs byte-level truncation.
+    """
+    if not isinstance(val, str):
+        return val
+    # Fast path: ASCII-only strings
+    if len(val) <= maxlen:
+        encoded = val.encode("utf-8")
+        if len(encoded) <= maxlen:
+            return val
+    # Trim one char at a time until byte length fits
+    while len(val.encode("utf-8")) > maxlen:
+        val = val[:-1]
+    return val
+
+
 def items_payload(row: Mapping[str, Any]) -> dict:
     """Map an SK1MF (+ PS33MF) row dict to the Items_Data Zoho payload."""
     g = lambda k: _strip(row.get(k))  # noqa: E731
     return {
         "Company":             g("SK1MCP"),
         "Year":                g("SK1MYR"),
-        "Item_Code":           g("SK1M1"),
-        "Item_Arabic_Name":    g("SK1M2"),
-        "Item_English_Name":   g("SK1M3"),
+        "Item_Code":           _trunc(g("SK1M1"), 20),
+        "Item_Arabic_Name":    _trunc(g("SK1M2"), 40),
+        "Item_English_Name":   _trunc(g("SK1M3"), 40),
         "SK1M9":               g("SK1M9"),
         "Posted_N_Year":       yn_to_bool(g("SK1M11")),
         "Imported_Item":       yn_to_bool(g("SK1M12")),
@@ -55,13 +74,13 @@ def items_payload(row: Mapping[str, Any]) -> dict:
         "Unit_1_Content":      g("SK1M20"),
         "Unit_2_Content":      g("SK1M21"),
         "Unit_3_Content":      g("SK1M22"),
-        "Add_Code":            g("SK1M24"),
-        "Parent_Item":         g("SK1M29"),
+        "Add_Code":            _trunc(g("SK1M24"), 20),
+        "Parent_Item":         _trunc(g("SK1M29"), 20),
         "Salable_Item":        yn_to_bool(g("SK1M31")),
         "Purchasable_Item":    yn_to_bool(g("SK1M32")),
         "Productionable_Item": yn_to_bool(g("SK1M33")),
         "Report_Unit_Code":    g("SK1M34"),
-        "Weight_Unit_Code":    g("SK1M36"),
+        "Weight_Unit_Code":    _trunc(g("SK1M36"), 3),
         "Weight_of_Unit":      g("SK1M37"),
         "Sales_Unit_Code":     g("SK1M39"),
         "Batch_No":            yn_to_bool(g("SK1M40")),
@@ -78,6 +97,7 @@ def branches_payload(row: Mapping[str, Any]) -> dict:
         "GRBRCP":              g("GRBRCP"),
         "GRBRYR":              g("GRBRYR"),
         "Branch_Code":         g("BN"),
-        "Branch_Arabic_Name":  g("GRBR2"),
-        "Branch_English_Name": g("GRBR3"),
+        "Branch_Arabic_Name":  _trunc(g("GRBR2"), 20),
+        "Branch_English_Name": _trunc(g("GRBR3"), 20),
     }
+

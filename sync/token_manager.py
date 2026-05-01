@@ -1,10 +1,16 @@
-"""Holds the current Zoho access token, refreshes it on schedule and on 401."""
+"""Thread-safe OAuth2 token manager with refresh support."""
+
 from __future__ import annotations
 
+import logging
+import os
 import threading
 import time
+from pathlib import Path
 
 import requests
+
+log = logging.getLogger(__name__)
 
 
 class TokenError(RuntimeError):
@@ -12,62 +18,121 @@ class TokenError(RuntimeError):
 
 
 class TokenManager:
-    REFRESH_AFTER = 50 * 60  # 50 minutes; Zoho tokens last ~60.
+    REFRESH_MARGIN = 300  # refresh 5 minutes before expiry
 
-    def __init__(self, client_id: str, client_secret: str, refresh_token: str,
-                 token_url: str, session: requests.Session | None = None,
-                 time_func=time.monotonic):
-        self._client_id = client_id
-        self._client_secret = client_secret
-        self._refresh_token = refresh_token
-        self._token_url = token_url
+    def __init__(
+        self,
+        env_path: str | Path | None = None,
+        session: requests.Session | None = None,
+        time_func=time.monotonic,
+        stop_event: threading.Event | None = None,
+    ):
+        self._env_path = Path(env_path) if env_path else None
         self._session = session or requests.Session()
         self._time = time_func
         self._lock = threading.Lock()
+
         self._token: str | None = None
-        self._fetched_at: float = 0.0
+        self._expires_at: float = 0.0
 
-    def get(self, force_refresh: bool = False) -> str:
+        self._load_from_env()
+
+    # ---------------------------------------------------------
+
+    def get(self, *, force_refresh: bool = False) -> str:
         with self._lock:
+            now = self._time()
+
             if (
-                force_refresh
-                or self._token is None
-                or self._time() - self._fetched_at >= self.REFRESH_AFTER
+                not force_refresh
+                and self._token
+                and now < self._expires_at - self.REFRESH_MARGIN
             ):
-                self._token = self._fetch()
-                self._fetched_at = self._time()
-            return self._token
+                return self._token
 
-    def invalidate(self) -> None:
-        with self._lock:
-            self._token = None
-            self._fetched_at = 0.0
+            return self._refresh()
 
-    def _fetch(self) -> str:
-        try:
-            resp = self._session.post(
-                self._token_url,
-                params={
-                    "client_id": self._client_id,
-                    "client_secret": self._client_secret,
-                    "refresh_token": self._refresh_token,
-                    "grant_type": "refresh_token",
-                },
-                timeout=30,
-            )
-        except requests.RequestException as e:
-            raise TokenError(f"Token request failed: {e}") from e
+    # ---------------------------------------------------------
 
-        if resp.status_code != 200:
-            raise TokenError(
-                f"Token request returned {resp.status_code}: {resp.text[:300]}"
-            )
-        try:
-            data = resp.json()
-        except ValueError as e:
-            raise TokenError(f"Token response was not JSON: {resp.text[:300]}") from e
+    def _refresh(self) -> str:
+        log.info("refreshing Zoho access token...")
 
-        token = data.get("access_token")
-        if not token:
-            raise TokenError(f"Token response had no access_token: {data}")
+        url = "https://accounts.zoho.com/oauth/v2/token"
+
+        params = {
+            "refresh_token": os.environ.get("refresh_token"),
+            "client_id": os.environ.get("client_id"),
+            "client_secret": os.environ.get("client_secret"),
+            "grant_type": "refresh_token",
+        }
+
+        resp = self._session.post(url, params=params, timeout=30)
+        data = resp.json()
+
+        if "access_token" not in data:
+            raise TokenError(f"Token refresh failed: {data}")
+
+        token = data["access_token"]
+        expires_in = int(data.get("expires_in", 3600))
+
+        self._token = token
+        self._expires_at = self._time() + expires_in
+
+        self._save_to_env(token, expires_in)
+
+        log.info("Zoho access token refreshed")
+
         return token
+
+    # ---------------------------------------------------------
+
+    def _load_from_env(self):
+        if not self._env_path or not self._env_path.exists():
+            return
+
+        text = self._env_path.read_text(encoding="utf-8")
+
+        for line in text.splitlines():
+            if line.startswith("access_token="):
+                self._token = line.split("=", 1)[1].strip()
+
+            if line.startswith("expires_in="):
+                try:
+                    self._expires_at = self._time() + int(line.split("=")[1])
+                except Exception:
+                    pass
+
+        if self._token:
+            log.info("loaded saved access token from .env")
+
+    # ---------------------------------------------------------
+
+    def _save_to_env(self, token: str, expires_in: int):
+        if not self._env_path:
+            return
+
+        lines = []
+        found_token = False
+        found_exp = False
+
+        if self._env_path.exists():
+            lines = self._env_path.read_text().splitlines()
+
+        new_lines = []
+
+        for line in lines:
+            if line.startswith("access_token="):
+                new_lines.append(f"access_token={token}")
+                found_token = True
+            elif line.startswith("expires_in="):
+                new_lines.append(f"expires_in={expires_in}")
+                found_exp = True
+            else:
+                new_lines.append(line)
+
+        if not found_token:
+            new_lines.append(f"access_token={token}")
+        if not found_exp:
+            new_lines.append(f"expires_in={expires_in}")
+
+        self._env_path.write_text("\n".join(new_lines))
